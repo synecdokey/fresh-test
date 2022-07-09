@@ -14,10 +14,7 @@ async GET(_, ctx) {
   const {name} = ctx.params;
   console.log(name)
   try {
-    const path =
-    Deno.cwd() === "/src"
-      ? `${Deno.cwd()}/www/articles/`
-      : `${Deno.cwd()}/articles/`;
+    const path = `${Deno.cwd()}/articles/`;
   const filePath = path + name + ".mdx";
     const article = await Deno.readFile(filePath);
     console.log('read file')
