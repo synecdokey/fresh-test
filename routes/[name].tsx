@@ -28,6 +28,7 @@ async GET(_, ctx) {
     console.error(out)
     return ctx.render({out: String(out)})
   } catch (e) {
+    console.error(e)
     return ctx.render(null)
   }
 }
