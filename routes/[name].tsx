@@ -12,6 +12,7 @@ export const handler: Handlers<Article | null> = {
 async GET(_, ctx) {
 
   const {name} = ctx.params;
+  console.log(name)
   try {
     const path =
     Deno.cwd() === "/src"
@@ -19,8 +20,10 @@ async GET(_, ctx) {
       : `${Deno.cwd()}/articles/`;
   const filePath = path + name + ".mdx";
     const article = await Deno.readFile(filePath);
+    console.log('read file')
     const decoder = new TextDecoder('utf-8');
     const text = decoder.decode(article)
+    console.log('decoded file')
     const out = await compile(text, {outputFormat: 'function-body' })
     console.error(out)
     return ctx.render({out: String(out)})
