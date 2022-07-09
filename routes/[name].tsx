@@ -1,7 +1,8 @@
 /** @jsx h */
 import { h } from "preact";
+import * as runtime from 'preact/jsx-runtime'
 import { Handlers, PageProps } from "$fresh/server.ts";
-import {compile, run} from 'mdx'
+import {compile, runSync } from 'mdx'
 
 type Article = {
   text: string;
@@ -20,7 +21,7 @@ async GET(_, ctx) {
     const article = await Deno.readFile(filePath);
     const decoder = new TextDecoder('utf-8');
     const text = decoder.decode(article)
-    const out = await compile(text, {outputFormat: 'function-body', pragmaImportSource: 'preact', jsxRuntime: 'classic', pragma: 'h', useDynamicImport: true});
+    const out = await compile(text, {outputFormat: 'function-body' })
     return ctx.render({out})
   } catch (e) {
     return ctx.render(null)
@@ -28,10 +29,7 @@ async GET(_, ctx) {
 }
 }
 
-export default async function Greet(props: PageProps) {
-  const C = props.data.out
-  console.log(C)
-  const D = await run(C);
-  console.log(D.default())
-  return <div><img /></div>;
+export default function Greet(props: PageProps) {
+  const {default: Component} = runSync(props.data.out, runtime);
+  return <div><Component /></div>;
 }
