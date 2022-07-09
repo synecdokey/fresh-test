@@ -22,7 +22,7 @@ async GET(_, ctx) {
     const decoder = new TextDecoder('utf-8');
     const text = decoder.decode(article)
     const out = await compile(text, {outputFormat: 'function-body' })
-    console.log(out)
+    console.error(out)
     return ctx.render({out: String(out)})
   } catch (e) {
     return ctx.render(null)
