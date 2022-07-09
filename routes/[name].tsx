@@ -15,7 +15,9 @@ async GET(_, ctx) {
   console.log(name)
   try {
     const path = `${Deno.cwd()}/articles/`;
-    console.log(Deno.cwd())
+    for await (const dir of Deno.readDir(Deno.cwd())) {
+    console.log(dir)
+    }
   const filePath = path + name + ".mdx";
     const article = await Deno.readFile(filePath);
     console.log('read file')
